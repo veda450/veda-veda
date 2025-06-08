@@ -1,0 +1,26 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Clone Repo') {
+            steps {
+                git 'https://github.com/veda450/tourist.git'
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    docker.build('hotelapp')
+                }
+            }
+        }
+
+        stage('Run Container') {
+            steps {
+                script {
+                    docker.image('hotelapp').run('-p 5000:5000')
+                }
+            }
+        }
+    }
